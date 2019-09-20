@@ -27,7 +27,7 @@ if(inicio=="telnet" or inicio=="Telnet" or inicio=="TELNET"):
 				amount_expected = len(message)
 					     
 				while amount_received < amount_expected:
-					data = sock.recv(19)
+					data = sock.recv(10000)
 					amount_received += len(data)
 					print (sys.stderr, 'recibiendo "%s"' % data)
 					 
